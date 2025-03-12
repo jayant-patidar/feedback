@@ -1,4 +1,9 @@
-FROM openjdk:17
+FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+
+COPY src /app/src
+COPY pom.xml /app/
+RUN mvn -f /home/app/pom.xml clean package
+
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","/app/target/spring_rest_docker.jar"]
